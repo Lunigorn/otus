@@ -52,7 +52,19 @@ public class ExecutingJS {
     }
 
     @Test
-    public void uploadFile() throws IOException, URISyntaxException {
+    public void uploadFileWithSubmit() throws IOException, URISyntaxException {
+        driver.get("https://ya.ru");
+
+        WebElement uploadInput = driver.findElement(By.cssSelector("#image_search"));
+        String pathToFile = Paths.get(getClass().getClassLoader().getResource("red.jpg").toURI()).toAbsolutePath().toString();
+        uploadInput.sendKeys(pathToFile);
+
+        WebElement form = driver.findElement(By.cssSelector("form[role='search']"));
+        form.submit();
+        System.out.println("Done");
+    }
+    @Test
+    public void uploadFileWithOnchange() throws IOException, URISyntaxException {
         driver.get("https://ya.ru");
 
         WebElement uploadInput = driver.findElement(By.cssSelector("#image_search"));
@@ -116,6 +128,13 @@ public class ExecutingJS {
     public void hideElement() throws IOException {
         driver.get("https://ya.ru");
         ((JavascriptExecutor) driver).executeScript("$(\"#text\").hide();");
+        saveFile(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE));
+    }
+
+    @Test
+    public void showElementByOpacity() throws IOException {
+        driver.get("https://ya.ru");
+        ((JavascriptExecutor) driver).executeScript("$(\"#image_search\").css('opacity', '100');");
         saveFile(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE));
     }
 
